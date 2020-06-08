@@ -6,9 +6,9 @@ const hat = '^';
 const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
-const temp = [];
-
+var outputField = Field.generateField(5, 5, fieldCharacter, hat, hole, pathCharacter);
 
 //Test progress
-const myField = new Field(temp);
-console.log(Field.generateField(5, 5, fieldCharacter, hat, hole, pathCharacter));
+console.log(outputField);
+console.log(Field.getCurrentPosition(outputField));
+console.log(Field.updateField(Field.getCurrentPosition(outputField), 'l'));
