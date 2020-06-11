@@ -4,9 +4,16 @@ module.exports =
             this._field = field;
         }
 
-        print() {
-            console.log(this._field);
+        get field() {
+            return this._field;
         }
+        
+        //method to print the field
+        print() {
+         return this.field.map(row =>
+            row.join('')
+        ).join('\n');
+          }
 
         ///method to generate the field output
         static generateField(height, width, fieldCharacter, hat, hole, pathCharacter) {
@@ -23,16 +30,27 @@ module.exports =
                     }
                 }
             }
-            arr[1][2] = pathCharacter;   // temporarily hard-coded to this value for testing purposes
-            arr[Math.floor(Math.random() * arr.length)][Math.floor(Math.random() * arr.length)] = hat; //randomly assign the hat to the field
+            arr[4][2] = pathCharacter;   // temporarily hard-coded to this value for testing purposes
+            arr[0][3] = hat;
+            //arr[Math.floor(Math.random() * arr.length)][Math.floor(Math.random() * arr.length)] = hat; //randomly assign the hat to the field
             return arr;
         }
         
         //method to return and array of two elements indicating the current position of the player
-        static getCurrentPosition(field) {
-            for (var i = 0; i < field.length; i++) {
-                for (var j = 0; j < field[i].length; j++) {
-                    if (field[i] == '*' || field[i][j] == '*') {
+         getCurrentPosition() {
+            for (var i = 0; i < this.field.length; i++) {
+                for (var j = 0; j < this.field[i].length; j++) {
+                    if (this.field[i] == '*' || this.field[i][j] == '*') {
+                        return [i, j];  
+                    }
+                }
+            }
+        }
+
+        getHatPosition(){
+            for (var i = 0; i < this.field.length; i++) {
+                for (var j = 0; j < this.field[i].length; j++) {
+                    if (this.field[i] == '^' || this.field[i][j] == '^') {
                         return [i, j];  
                     }
                 }
@@ -41,10 +59,12 @@ module.exports =
         
         //this method takes the current position or the player (array of two elements)
             //and the direction indicated by the player and returns the updated position
-        static updateField(currPosition, direction) {
-            if (direction == 'u') {
+        updateField(currPosition, direction) {
+            if(direction == 'x'){return 'x'}
+
+            if (direction == 'd') {
                 currPosition[0]++;
-            } else if (direction == 'd') {
+            } else if (direction == 'u') {
                 currPosition[0]--;
             }
             else if (direction == 'l') {
@@ -55,11 +75,15 @@ module.exports =
             }
 
             if (currPosition[0] < 0 || currPosition[1] < 0) {
-                console.log('you died.');
-            } else {
+                console.log('out of bounds');
+            }else{
+                this.field[currPosition[0]][currPosition[1]] = '*';      
+                console.log(currPosition);       
                 return currPosition;
             }
-        }
+            }
+           
+        
 
         //Filed output example
         /*
